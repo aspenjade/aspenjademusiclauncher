@@ -31,23 +31,22 @@ class LoginSpider(scrapy.Spider):
         # Check login success by inspecting the redirected page
         if "access" in response.text:
             self.logger.info("Logged in successfully!")
-            # Now you can continue scraping as an authenticated user
-            # For example, scraping content from the authenticated pages
+            
+            #go to parse data from dashboard
             yield response.follow('https://groover.co/en/band/dashboard/', callback=self.parse)
 
             
     def parse(self, response):
         if 'band/dashboard' in response.url:
-            print('Successfully navigated to the dashboard page.')
-            if self.wait_for_page_load(response):
-            # Process the loaded page data
+            print('Successfully navigated to the dashboard page.')  #THIS IS A FALSE POSITIVE
+            if self.check_page_response(response):
                 self.logger.info("Page has finished loading: {}".format(response.url))
             # Call your parse_dashboard method here
             yield self.parse_dashboard(response)
         else:
             print('Navigation to the dashboard page failed. Current URL: %s', response.url)
 
-    def wait_for_page_load(self, response):
+    def check_page_response(self, response):
         """
         Waits for the page to load completely
         """
@@ -55,7 +54,6 @@ class LoginSpider(scrapy.Spider):
             print('page loaded')
             html_file = open('random.html', 'w')
             html_file.write(response.body.decode("utf-8"))
-            # Additional check can be added based on your requirement (e.g. certain element to be present)
             return True
         return False
 
