@@ -13,7 +13,7 @@ class LoginSpider(scrapy.Spider):
         # Extract the necessary login credentials here
         login_data = {
             'email': 'aspenjadeartist@gmail.com',
-            'password': 'password'
+            'password': 'Scrapy*11'
         }
         
         url = 'https://auth.groover.co/api/login/'
@@ -21,7 +21,7 @@ class LoginSpider(scrapy.Spider):
         # Submit the form data
 
         yield FormRequest(url,
-                            formdata={'email': 'aspenjadeartist@gmail.com', 'password': 'Rachel*22'},
+                            formdata=login_data,
                             callback=self.after_login)
 
        
